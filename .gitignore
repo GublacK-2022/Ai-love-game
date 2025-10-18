@@ -1,0 +1,25 @@
+# 微信小程序
+.DS_Store
+node_modules/
+miniprogram_npm/
+
+# 开发工具
+.vscode/
+.idea/
+
+# 日志文件
+*.log
+npm-debug.log*
+
+# 临时文件
+.temp/
+.cache/
+
+# 敏感信息（重要！）
+config/secret.js
+*.key
+.env
+
+# 打包文件
+dist/
+build/
