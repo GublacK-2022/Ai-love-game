@@ -1,0 +1,184 @@
+{
+  "main": {
+    "id": "134d59b959716711",
+    "type": "split",
+    "children": [
+      {
+        "id": "263d8afb47b5d016",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fd5b3a90936291ef",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "角色设定文档.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "角色设定文档"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "bebf8bc761aa1704",
+    "type": "split",
+    "children": [
+      {
+        "id": "5aaa49e13f70bd8b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c4757ce5b9151c74",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "d76259aff6456dd2",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "edc018e2f9c4ed0e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "bea22a16ef21df19",
+    "type": "split",
+    "children": [
+      {
+        "id": "aecac7ea6fb009f5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "321a222092d355df",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "football_prediction_doc.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for football_prediction_doc"
+            }
+          },
+          {
+            "id": "52de753c977eabe5",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "football_prediction_doc.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from football_prediction_doc"
+            }
+          },
+          {
+            "id": "4bbc64d396148901",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "e207e11987176798",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "football_prediction_doc.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of football_prediction_doc"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "fd5b3a90936291ef",
+  "lastOpenFiles": [
+    "角色设定文档.md",
+    "更新日志.md",
+    "README.md",
+    "AI互动小程序.md",
+    "project.config.json",
+    "project.private.config.json",
+    "football_prediction_doc.md",
+    "football_prediction_ui.tsx",
+    "Welcome.md"
+  ]
+}
