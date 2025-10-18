@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "角色设定文档.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "角色设定文档"
+              "title": "README"
             }
           }
         ]
@@ -171,10 +171,10 @@
   },
   "active": "fd5b3a90936291ef",
   "lastOpenFiles": [
+    "AI互动小程序.md",
+    "README.md",
     "角色设定文档.md",
     "更新日志.md",
-    "README.md",
-    "AI互动小程序.md",
     "project.config.json",
     "project.private.config.json",
     "football_prediction_doc.md",
