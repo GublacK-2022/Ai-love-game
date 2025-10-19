@@ -1,27 +1,39 @@
-<!--index.wxml-->
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
-        </view>
-      </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
-      </block>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 欢迎区域 -->
+  <view class="welcome-section">
+    <image class="logo" src="/images/logo.png" mode="aspectFit" />
+    <text class="app-name">AI恋爱养成</text>
+    <text class="app-slogan">开启你的专属恋爱故事</text>
+  </view>
+
+  <!-- 功能介绍 -->
+  <view class="feature-section">
+    <view class="feature-item">
+      <text class="feature-icon">💬</text>
+      <text class="feature-title">真实对话</text>
+      <text class="feature-desc">AI驱动的自然对话体验</text>
     </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+    
+    <view class="feature-item">
+      <text class="feature-icon">❤️</text>
+      <text class="feature-title">情感养成</text>
+      <text class="feature-desc">好感度系统，多种结局</text>
+    </view>
+    
+    <view class="feature-item">
+      <text class="feature-icon">🎭</text>
+      <text class="feature-title">多样角色</text>
+      <text class="feature-desc">不同性格，总有一款适合你</text>
     </view>
   </view>
-</scroll-view>
+
+  <!-- 开始按钮 -->
+  <view class="action-section">
+    <button class="btn-start" bindtap="goToCharacterSelect">
+      开始体验
+    </button>
+    
+    <text class="tip-text">已有 {{userCount}} 人开启了恋爱之旅</text>
+  </view>
+</view>

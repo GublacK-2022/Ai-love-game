@@ -1,0 +1,57 @@
+<!--pages/character-select/character-select.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="header-title">选择你的命中注定</text>
+    <text class="header-subtitle">每个角色都有独特的故事等你探索</text>
+  </view>
+
+  <!-- 角色列表 -->
+  <scroll-view class="character-list" scroll-y>
+    <view 
+      wx:for="{{characters}}" 
+      wx:key="id"
+      class="character-card"
+      bindtap="selectCharacter"
+      data-id="{{item.id}}"
+    >
+      <!-- 角色头像 -->
+      <view class="character-avatar">
+        <image 
+          src="{{item.avatar}}" 
+          mode="aspectFill"
+          class="avatar-img"
+        />
+        <!-- 免费/付费标签 -->
+        <view class="tag {{item.isFree ? 'tag-free' : 'tag-paid'}}">
+          {{item.isFree ? '免费' : '¥' + item.price}}
+        </view>
+      </view>
+
+      <!-- 角色信息 -->
+      <view class="character-info">
+        <view class="name-row">
+          <text class="character-name">{{item.name}}</text>
+          <text class="character-age">{{item.age}}岁</text>
+        </view>
+        
+        <text class="character-occupation">{{item.occupation}}</text>
+        
+        <!-- 标签 -->
+        <view class="tags">
+          <text 
+            wx:for="{{item.tags}}" 
+            wx:for-item="tag"
+            wx:key="*this"
+            class="tag-item"
+          >
+            {{tag}}
+          </text>
+        </view>
+        
+        <!-- 简介 -->
+        <text class="character-intro">{{item.intro}}</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

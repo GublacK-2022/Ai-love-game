@@ -1,62 +1,115 @@
-/**index.wxss**/
-page {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.scrollarea {
-  flex: 1;
-  overflow-y: hidden;
-}
+/* pages/index/index.wxss - 现代简约风格 */
 
-.userinfo {
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #aaa;
-  width: 80%;
+  justify-content: space-around;
+  padding: 60px 20px 40px;
 }
 
-.userinfo-avatar {
-  overflow: hidden;
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+/* 欢迎区域 */
+.welcome-section {
+  text-align: center;
+  color: white;
 }
 
-.usermotto {
-  margin-top: 200px;
+.logo {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
-.avatar-wrapper {
-  padding: 0;
-  width: 56px !important;
-  border-radius: 8px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-.avatar {
+.app-name {
   display: block;
-  width: 56px;
-  height: 56px;
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
 }
 
-.nickname-wrapper {
-  display: flex;
+.app-slogan {
+  display: block;
+  font-size: 15px;
+  opacity: 0.85;
+  font-weight: 300;
+}
+
+/* 功能介绍 */
+.feature-section {
   width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
-  border-top: .5px solid rgba(0, 0, 0, 0.1);
-  border-bottom: .5px solid rgba(0, 0, 0, 0.1);
-  color: black;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
 }
 
-.nickname-label {
-  width: 105px;
-}
-
-.nickname-input {
+.feature-item {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
+  padding: 0 10px;
+}
+
+.feature-icon {
+  font-size: 44px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.feature-title {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.feature-desc {
+  font-size: 12px;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+/* 操作区域 */
+.action-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-start {
+  width: 220px;
+  height: 52px;
+  background: white;
+  color: #667eea;
+  border-radius: 26px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 52px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px;
+}
+
+.btn-start::after {
+  border: none;
+}
+
+.btn-start:active {
+  opacity: 0.95;
+  transform: scale(0.98);
+}
+
+.tip-text {
+  color: white;
+  font-size: 13px;
+  margin-top: 20px;
+  opacity: 0.7;
+  font-weight: 300;
 }

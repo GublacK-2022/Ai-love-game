@@ -1,0 +1,158 @@
+/* pages/character-select/character-select.wxss - 垂直居中版本 */
+
+.container {
+  padding: 0;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+.page-header {
+  padding: 32px 20px 24px;
+  text-align: center;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header-title {
+  display: block;
+  font-size: 26px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.header-subtitle {
+  display: block;
+  font-size: 14px;
+  color: #8e8e93;
+  font-weight: 300;
+}
+
+/* 角色列表 */
+.character-list {
+  height: calc(100vh - 150px);
+  padding: 16px 16px 20px;
+}
+
+/* 角色卡片 - 关键：垂直居中 */
+.character-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center; /* ⭐ 关键：垂直居中 */
+  transition: all 0.2s ease;
+}
+
+.character-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 角色头像 */
+.character-avatar {
+  width: 100px;
+  height: 130px;
+  margin-right: 16px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* 免费/付费标签 */
+.tag {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.tag-free {
+  background: rgba(52, 199, 89, 0.9);
+  color: white;
+}
+
+.tag-paid {
+  background: rgba(255, 149, 0, 0.9);
+  color: white;
+}
+
+/* 角色信息 - 移除固定高度 */
+.character-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* ⭐ 用gap控制间距 */
+}
+
+.name-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.character-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-right: 8px;
+  letter-spacing: 0.3px;
+}
+
+.character-age {
+  font-size: 13px;
+  color: #8e8e93;
+  font-weight: 400;
+}
+
+.character-occupation {
+  font-size: 13px;
+  color: #636366;
+  font-weight: 400;
+  margin: 0; /* ⭐ 移除margin，用gap控制 */
+}
+
+/* 标签列表 */
+.tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-item {
+  background: #f2f2f7;
+  color: #3a3a3c;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 400;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* 简介 */
+.character-intro {
+  font-size: 13px;
+  color: #636366;
+  line-height: 1.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-weight: 300;
+  margin: 0; /* ⭐ 移除margin */
+}
