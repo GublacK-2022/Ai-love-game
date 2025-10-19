@@ -1,2 +1,84 @@
 <!--pages/chat/chat.wxml-->
-<text>pages/chat/chat.wxml</text>
+<view class="chat-container">
+  <!-- 顶部角色信息栏 -->
+  <view class="header">
+    <view class="character-info">
+      <image class="avatar" src="{{character.avatar}}" mode="aspectFill" />
+      <view class="info">
+        <text class="name">{{character.name}}</text>
+        <text class="status">在线</text>
+      </view>
+    </view>
+    
+    <!-- 好感度显示 -->
+    <view class="affection-bar">
+      <view class="affection-label">
+        <text>好感度</text>
+        <text class="affection-value">{{affection}}</text>
+      </view>
+      <view class="progress-bg">
+        <view class="progress-fill" style="width: {{affection + '%'}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view 
+    class="message-list" 
+    scroll-y 
+    scroll-into-view="{{scrollToView}}"
+    scroll-with-animation
+  >
+    <view wx:for="{{messages}}" wx:key="index" class="message-item" id="msg-{{index}}">
+      <!-- AI消息 -->
+      <view wx:if="{{item.role === 'assistant'}}" class="message ai-message">
+        <image class="msg-avatar" src="{{character.avatar}}" mode="aspectFill" />
+        <view class="bubble ai-bubble">
+          <text>{{item.content}}</text>
+        </view>
+      </view>
+
+      <!-- 用户消息 -->
+      <view wx:else class="message user-message">
+        <view class="bubble user-bubble">
+          <text>{{item.content}}</text>
+        </view>
+        <image class="msg-avatar" src="/images/user-avatar.png" mode="aspectFill" />
+      </view>
+    </view>
+
+    <!-- AI思考中 -->
+    <view wx:if="{{isThinking}}" class="message ai-message">
+      <image class="msg-avatar" src="{{character.avatar}}" mode="aspectFill" />
+      <view class="bubble ai-bubble thinking">
+        <text class="dot"></text>
+        <text class="dot"></text>
+        <text class="dot"></text>
+      </view>
+    </view>
+
+    <!-- 占位，确保最后一条消息可见 -->
+    <view style="height: 20px;"></view>
+  </scroll-view>
+
+  <!-- 输入框 -->
+  <view class="input-bar">
+    <input 
+      class="input-field"
+      type="text"
+      placeholder="说点什么..."
+      value="{{inputText}}"
+      bindinput="onInput"
+      confirm-type="send"
+      bindconfirm="sendMessage"
+      adjust-position="{{false}}"
+    />
+    <button 
+      class="send-btn {{inputText ? 'active' : ''}}" 
+      bindtap="sendMessage"
+      disabled="{{!inputText || isThinking}}"
+    >
+      发送
+    </button>
+  </view>
+</view>

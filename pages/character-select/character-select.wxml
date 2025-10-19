@@ -10,10 +10,10 @@
   <scroll-view class="character-list" scroll-y>
     <view 
       wx:for="{{characters}}" 
-      wx:key="id"
+      wx:key="_id"
       class="character-card"
       bindtap="selectCharacter"
-      data-id="{{item.id}}"
+      data-id="{{item._id}}"
     >
       <!-- 角色头像 -->
       <view class="character-avatar">

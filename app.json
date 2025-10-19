@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/character-select/character-select"
+    "pages/character-select/character-select",
+    "pages/chat/chat"
   ],
   "window": {
     "backgroundTextStyle": "dark",
