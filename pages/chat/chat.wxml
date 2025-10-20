@@ -1,5 +1,13 @@
 <!--pages/chat/chat.wxml-->
 <view class="chat-container">
+  <!-- 加载状态提示 -->
+  <view wx:if="{{isLoading}}" class="loading-container">
+    <view class="loading-card">
+      <view class="loading-icon"></view>
+      <text class="loading-text">加载对话历史中...</text>
+    </view>
+  </view>
+
   <!-- 顶部角色信息栏 -->
   <view class="header">
     <view class="character-info">
@@ -30,11 +38,21 @@
     scroll-with-animation
   >
     <view wx:for="{{messages}}" wx:key="index" class="message-item" id="msg-{{index}}">
-      <!-- AI消息 -->
+      <!-- AI消息 - 分段渲染 -->
       <view wx:if="{{item.role === 'assistant'}}" class="message ai-message">
         <image class="msg-avatar" src="{{character.avatar}}" mode="aspectFill" />
         <view class="bubble ai-bubble">
-          <text>{{item.content}}</text>
+          <!-- 🎮 遍历 parsedContent 进行分段显示 -->
+          <view wx:if="{{item.parsedContent && item.parsedContent.length > 0}}">
+            <block wx:for="{{item.parsedContent}}" wx:for-item="segment" wx:key="index">
+              <!-- 叙事部分：灰色小字，带【】 -->
+              <text wx:if="{{segment.type === 'narrative'}}" class="narrative-text">【{{segment.text}}】</text>
+              <!-- 对话部分：正常大小，带"" -->
+              <text wx:elif="{{segment.type === 'dialogue'}}" class="dialogue-text">"{{segment.text}}"</text>
+            </block>
+          </view>
+          <!-- 兼容旧格式：如果没有 parsedContent，显示原始内容 -->
+          <text wx:else>{{item.content}}</text>
         </view>
       </view>
 
@@ -43,7 +61,7 @@
         <view class="bubble user-bubble">
           <text>{{item.content}}</text>
         </view>
-        <image class="msg-avatar" src="/images/user-avatar.png" mode="aspectFill" />
+        <view class="msg-avatar user-avatar-placeholder">我</view>
       </view>
     </view>
 
@@ -61,24 +79,48 @@
     <view style="height: 20px;"></view>
   </scroll-view>
 
-  <!-- 输入框 -->
-  <view class="input-bar">
-    <input 
-      class="input-field"
-      type="text"
-      placeholder="说点什么..."
-      value="{{inputText}}"
-      bindinput="onInput"
-      confirm-type="send"
-      bindconfirm="sendMessage"
-      adjust-position="{{false}}"
-    />
-    <button 
-      class="send-btn {{inputText ? 'active' : ''}}" 
-      bindtap="sendMessage"
-      disabled="{{!inputText || isThinking}}"
+  <!-- 输入框区域 -->
+  <view class="input-container">
+    <!-- 🎮 快捷互动选项 -->
+    <scroll-view
+      wx:if="{{quickActions.length > 0}}"
+      class="quick-actions"
+      scroll-x
+      show-scrollbar="{{false}}"
     >
-      发送
-    </button>
+      <view class="quick-actions-list">
+        <button
+          wx:for="{{quickActions}}"
+          wx:key="*this"
+          class="quick-action-btn"
+          data-text="{{item}}"
+          bindtap="selectQuickAction"
+          hover-class="quick-action-hover"
+        >
+          {{item}}
+        </button>
+      </view>
+    </scroll-view>
+
+    <!-- 输入框 -->
+    <view class="input-bar">
+      <input
+        class="input-field"
+        type="text"
+        placeholder="说点什么..."
+        value="{{inputText}}"
+        bindinput="onInput"
+        confirm-type="send"
+        bindconfirm="sendMessage"
+        adjust-position="{{false}}"
+      />
+      <button
+        class="send-btn {{inputText ? 'active' : ''}}"
+        bindtap="sendMessage"
+        disabled="{{!inputText || isThinking}}"
+      >
+        发送
+      </button>
+    </view>
   </view>
 </view>

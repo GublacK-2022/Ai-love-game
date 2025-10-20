@@ -5,6 +5,68 @@
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
+  position: relative;
+}
+
+/* 加载状态遮罩 */
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px 40px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+.loading-icon {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f0f0f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 加载动画 */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* 顶部信息栏 */
@@ -118,7 +180,28 @@
   border-radius: 4px 18px 18px 18px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   word-wrap: break-word;
-  line-height: 1.6;
+  line-height: 1.8;
+}
+
+/* 🎮 叙事文本样式 - 淡灰色小字，【】括号 */
+.narrative-text {
+  display: block;
+  color: #999999;
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 3px 0;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+/* 🎮 对话文本样式 - 正常大小深色，""引号 */
+.dialogue-text {
+  display: block;
+  color: #1a1a1a;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+  margin: 6px 0;
 }
 
 /* 用户消息 */
@@ -132,6 +215,21 @@
   border-radius: 18px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   margin-left: 8px;
+  flex-shrink: 0;
+}
+
+/* 用户头像占位符 */
+.user-avatar-placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
@@ -179,15 +277,66 @@
   }
 }
 
+/* 输入框容器 */
+.input-container {
+  background: white;
+  border-top: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+/* 🎮 快捷互动选项区域 */
+.quick-actions {
+  white-space: nowrap;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%);
+}
+
+.quick-actions-list {
+  display: inline-flex;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+/* 使用 button 组件代替 view */
+.quick-action-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf4 100%);
+  color: #667eea;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 18px;
+  white-space: nowrap;
+  border: 1px solid #e0e6f0;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* 去掉 button 默认样式 */
+.quick-action-btn::after {
+  border: none;
+}
+
+.quick-action-btn.button-hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(0.98);
+}
+
+.quick-action-hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
 /* 输入框 */
 .input-bar {
   background: white;
   padding: 8px 16px;
-  border-top: 1px solid #f0f0f0;
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-shrink: 0;
   padding-bottom: calc(8px + env(safe-area-inset-bottom));
 }
 

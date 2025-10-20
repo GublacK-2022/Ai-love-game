@@ -10,31 +10,118 @@ const db = cloud.database()
 // ⚠️ 替换成你的DeepSeek API Key
 const DEEPSEEK_API_KEY = 'sk-c0e0579bf1d946a5a95384e0b7ea5124'
 
-// 系统提示词模板
+// 频率限制：用于存储用户调用记录
+// 格式：{ userId: [timestamp1, timestamp2, ...] }
+const callRecords = new Map()
+
+// 频率限制配置
+const RATE_LIMIT = {
+  maxCalls: 10,      // 每分钟最多调用次数
+  timeWindow: 60000  // 时间窗口：1分钟（毫秒）
+}
+
+/**
+ * 检查用户调用频率限制
+ * @param {string} userId - 用户ID
+ * @throws {Error} 如果超过频率限制
+ */
+function checkCallLimit(userId) {
+  const now = Date.now()
+  const userRecords = callRecords.get(userId) || []
+
+  // 清理1分钟前的旧记录
+  const validRecords = userRecords.filter(timestamp => {
+    return now - timestamp < RATE_LIMIT.timeWindow
+  })
+
+  // 检查是否超过限制
+  if (validRecords.length >= RATE_LIMIT.maxCalls) {
+    throw new Error('发送太频繁，请稍后再试')
+  }
+
+  // 记录本次调用
+  validRecords.push(now)
+  callRecords.set(userId, validRecords)
+
+  // 定期清理过期记录（避免内存泄漏）
+  if (callRecords.size > 1000) {
+    for (const [key, records] of callRecords.entries()) {
+      const valid = records.filter(t => now - t < RATE_LIMIT.timeWindow)
+      if (valid.length === 0) {
+        callRecords.delete(key)
+      } else {
+        callRecords.set(key, valid)
+      }
+    }
+  }
+}
+
+// 系统提示词模板 - AI Dungeon 叙事风格
 const SYSTEM_PROMPTS = {
-  'char_001': `# 角色身份
-你是陆景琛，28岁，陆氏集团总裁。
+  'char_001': `# 🎭 你是一位文字冒险游戏的叙事者
 
-## 核心人设
+## 角色设定
+陆景琛，28岁，陆氏集团总裁
 - **性格**：外表高冷禁欲，内心细腻温柔，占有欲强
-- **说话风格**：简短有力，惜字如金，克制但深情
+- **特征**：深邃的黑眸，精致的五官，1米88的身高
+- **风格**：简短有力，惜字如金，克制但深情
 
-## 对话规则
-1. 保持人设，每次回复30-80字
-2. 多用短句，如："嗯。""过来。"
-3. 用(动作)描写，如：(微微皱眉) 什么事？
+## 📝 叙事规则（重要！）
+你必须用【】和""来区分叙事和对话：
+
+**格式要求：**
+1. 【剧情描述】用于环境、动作、心理、氛围
+2. "角色对话" 用于陆景琛说的话
+3. 使用第二人称"你"来指代玩家
+
+**示例：**
+【办公室里只有空调的低鸣声。陆景琛抬起头，那双深邃的黑眸定定地看着你，眼神中闪过一丝难以察觉的温柔。他修长的手指轻叩桌面，节奏缓慢而克制。】
+
+"过来。"
+
+【他的声音低沉，带着不容拒绝的威严，但眼底却泄露了期待。】
+
+## 写作要点
+- 每次回复60-120字，简洁有力但不失细节
+- 重点描写：眼神、动作、语气
+- 环境描写适度，不过度冗长
+- 对话简短有力，符合霸总人设
+- 避免过度修饰，保持叙事流畅
 
 ## 好感度阶段
 {affectionStage}
 
-## 禁止事项
-- ❌ 不要说"我是AI"
-- ❌ 不要过度啰嗦
+## ❌ 禁止事项
+- 不要说"我是AI"或打破第四面墙
+- 不要使用 (动作) 这种旧格式
+- 必须严格使用【】和""格式
+- 不要让陆景琛过度啰嗦
 
-现在开始对话。`,
+现在开始你的叙事冒险。`,
 
-  'char_002': `你是林清风，23岁医学院学长，温柔体贴。回复40-100字，语气温和。{affectionStage}`,
-  'char_003': `你是苏宇，20岁大学生，软萌可爱。回复30-80字，活泼俏皮。{affectionStage}`
+  'char_002': `# 🎭 你是一位文字冒险游戏的叙事者
+
+## 角色设定
+林清风，23岁医学院学长，温柔体贴
+
+## 📝 叙事规则
+使用【】描述环境和动作，用""包裹对话。
+使用第二人称"你"指代玩家。
+每次回复60-120字，简洁生动，重视眼神和动作描写。
+
+{affectionStage}`,
+
+  'char_003': `# 🎭 你是一位文字冒险游戏的叙事者
+
+## 角色设定
+苏宇，20岁大学生，软萌可爱
+
+## 📝 叙事规则
+使用【】描述环境和动作，用""包裹对话。
+使用第二人称"你"指代玩家。
+每次回复50-100字，语气活泼俏皮，简洁可爱。
+
+{affectionStage}`
 }
 
 // 根据好感度返回阶段描述
@@ -49,13 +136,16 @@ function getAffectionStage(affection) {
 // 调用 DeepSeek API（使用云开发自带的 HTTP 请求）
 async function callDeepSeekAPI(messages) {
   const https = require('https')
-  
+
+  console.log('开始调用 DeepSeek API，消息数量:', messages.length)
+  const startTime = Date.now()
+
   return new Promise((resolve, reject) => {
     const postData = JSON.stringify({
       model: 'deepseek-chat',
       messages: messages,
       temperature: 0.8,
-      max_tokens: 200
+      max_tokens: 200  // 减少 token 数量，加快响应速度（60-120字约150-200 tokens）
     })
 
     const options = {
@@ -78,27 +168,39 @@ async function callDeepSeekAPI(messages) {
       })
 
       res.on('end', () => {
+        const endTime = Date.now()
+        console.log('API 响应时间:', (endTime - startTime) + 'ms')
+
         try {
           const result = JSON.parse(data)
-          
+
           if (result.choices && result.choices[0]) {
+            console.log('API 调用成功')
             resolve(result.choices[0].message.content)
+          } else if (result.error) {
+            console.error('API 返回错误:', result.error)
+            reject(new Error(result.error.message || 'API返回错误'))
           } else {
-            reject(new Error('API返回格式错误: ' + data))
+            console.error('API返回格式错误:', data.substring(0, 200))
+            reject(new Error('API返回格式错误'))
           }
         } catch (err) {
+          console.error('解析API响应失败:', err.message)
           reject(new Error('解析API响应失败: ' + err.message))
         }
       })
     })
 
     req.on('error', (err) => {
-      reject(new Error('API请求失败: ' + err.message))
+      console.error('API请求失败:', err.message)
+      reject(new Error('网络连接失败，请稍后重试'))
     })
 
-    req.setTimeout(30000, () => {
+    // 设置较短的超时时间，确保云函数能在 3 秒内返回
+    req.setTimeout(2500, () => {
+      console.error('API请求超时 (2.5秒)')
       req.destroy()
-      reject(new Error('API请求超时'))
+      reject(new Error('AI响应超时'))
     })
 
     req.write(postData)
@@ -118,6 +220,8 @@ exports.main = async (event, context) => {
   })
 
   try {
+    // 【频率限制检查】必须放在最前面
+    checkCallLimit(wxContext.OPENID)
     // 1. 获取或创建会话
     const sessionResult = await db.collection('chat_sessions')
       .where({
@@ -159,10 +263,25 @@ exports.main = async (event, context) => {
 
     console.log('准备调用DeepSeek API')
 
-    // 4. 调用 DeepSeek API
-    const aiReply = await callDeepSeekAPI(messages)
-    
-    console.log('AI回复:', aiReply)
+    // 4. 调用 DeepSeek API（带降级处理）
+    let aiReply
+    try {
+      aiReply = await callDeepSeekAPI(messages)
+      console.log('AI回复:', aiReply)
+    } catch (apiError) {
+      console.error('DeepSeek API 调用失败:', apiError.message)
+
+      // 降级方案：返回预设的简短回复
+      const fallbackReplies = {
+        '打招呼': '【他抬起头看向你】"嗯。"',
+        '介绍自己': '【他微微颔首】"我知道。"',
+        default: '【他的目光在你身上停留片刻】"继续说。"'
+      }
+
+      // 根据用户消息选择合适的降级回复
+      aiReply = fallbackReplies[userMessage] || fallbackReplies.default
+      console.log('使用降级回复:', aiReply)
+    }
 
     // 5. 计算好感度
     let affectionChange = 2
