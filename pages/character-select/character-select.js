@@ -17,14 +17,17 @@ Page({
     })
 
     try {
-      const res = await db.collection('characters').get()
-      
-      console.log('加载到的角色数据:', res.data) // ⭐ 添加日志
-      
+      // 按 _id 升序排序，确保 char_001 在第一位
+      const res = await db.collection('characters')
+        .orderBy('_id', 'asc')
+        .get()
+
+      console.log('加载到的角色数据:', res.data)
+
       this.setData({
         characters: res.data
       })
-      
+
     } catch (err) {
       console.error('加载角色失败:', err)
       wx.showToast({

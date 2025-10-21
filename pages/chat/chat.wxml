@@ -8,6 +8,42 @@
     </view>
   </view>
 
+  <!-- 🎭 场景选择器 -->
+  <view wx:if="{{showSceneSelector}}" class="scene-selector-overlay">
+    <view class="scene-selector-container">
+      <view class="scene-selector-header">
+        <text class="scene-selector-title">选择你的故事开始</text>
+        <text class="scene-selector-subtitle">与{{character.name}}的相遇...</text>
+      </view>
+
+      <scroll-view class="scene-list" scroll-y>
+        <view
+          wx:for="{{availableScenes}}"
+          wx:key="scene"
+          class="scene-card"
+          data-scene="{{item.scene}}"
+          bindtap="selectScene"
+          hover-class="scene-card-hover"
+        >
+          <view class="scene-card-header">
+            <text class="scene-title">{{item.title}}</text>
+            <view class="scene-keywords">
+              <text
+                wx:for="{{item.keywords}}"
+                wx:key="*this"
+                wx:for-item="keyword"
+                class="keyword-tag"
+              >
+                {{keyword}}
+              </text>
+            </view>
+          </view>
+          <text class="scene-preview">{{item.content}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
   <!-- 顶部角色信息栏 -->
   <view class="header">
     <view class="character-info">

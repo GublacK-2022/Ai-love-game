@@ -76,7 +76,10 @@ Page({
     affection: 0,
     scrollToView: '',
     // 🎮 快捷互动选项（根据好感度动态生成）
-    quickActions: []
+    quickActions: [],
+    // 🎭 场景选择器
+    showSceneSelector: false,
+    availableScenes: []
   },
 
   onLoad(options) {
@@ -97,7 +100,7 @@ Page({
     })
 
     this.loadCharacter()
-    this.loadChatHistory()
+    this.checkIfNewChat() // 🎭 检查是否新对话，决定是否显示场景选择器
   },
 
   // 加载角色信息
@@ -183,57 +186,127 @@ Page({
     }
   },
 
-  // 🎮 显示开场白 - 首次进入对话时的背景叙述
-  showOpeningNarration() {
-    // 根据角色ID设置不同的开场白
-    const openingTexts = {
-      'char_001': `【这是陆氏集团的顶层办公室。落地窗外是城市的繁华景象，午后的阳光透过百叶窗在地板上投下斑驳的光影。空调的低鸣声和远处传来的电话铃声，构成了这个商业帝国心脏的日常。】
+  // 🎭 检查是否新对话
+  async checkIfNewChat() {
+    // 设置加载状态
+    this.setData({ isLoading: true })
 
-【陆景琛坐在黑色的真皮老板椅上，修长的手指正翻阅着一份财务报告。他身着深灰色的手工定制西装，领口微微敞开，露出精致的锁骨。听到敲门声，他头也不抬地开口。】
+    try {
+      const sessionRes = await db.collection('chat_sessions')
+        .where({
+          characterId: this.data.characterId
+        })
+        .get()
 
-"进来。"
+      if (sessionRes.data.length === 0) {
+        // 新对话 - 显示场景选择器
+        console.log('新对话，显示场景选择器')
 
-【他的声音低沉磁性，带着不容置疑的威严。直到你推门而入，他才缓缓抬起头，那双深邃的黑眸定定地看向你，眼神中闪过一丝难以察觉的波动。】`,
+        // 等待角色数据加载完成
+        await this.waitForCharacter()
 
-      'char_002': `【这是医学院图书馆三楼的自习区。窗外是校园里金黄的银杏树，秋日的阳光温柔地洒在书桌上。空气中弥漫着书页和淡淡的消毒水味道。】
+        this.setData({
+          showSceneSelector: true,
+          availableScenes: this.data.character.firstMessages || [],
+          isLoading: false
+        })
 
-【林清风正在认真地做笔记，他穿着白色的衬衫，戴着银色的细框眼镜。听到脚步声，他抬起头，温柔的眼神中带着友善的笑意。】
+        wx.hideLoading()
+      } else {
+        // 老对话 - 直接加载历史
+        console.log('已有对话记录，加载历史')
+        this.setData({ showSceneSelector: false })
+        this.loadChatHistory()
+      }
+    } catch (err) {
+      console.error('检查对话状态失败:', err)
+      this.setData({ isLoading: false })
+      wx.hideLoading()
 
-"你来了啊，要一起复习吗？"
+      // 出错时显示默认开场白
+      this.showDefaultOpening()
+    }
+  },
 
-【他轻声说着，顺手把旁边的椅子拉开，为你留出了位置。】`,
-
-      'char_003': `【这是大学生活区的奶茶店。店内播放着轻快的音乐，空气中飘着奶茶的香甜味道。窗边的位置摆着可爱的玩偶和绿植。】
-
-【苏宇正拿着手机拍奶茶的照片，他穿着米色的毛衣，头发有些蓬松。看到你进来，他立刻放下手机，眼睛亮晶晶地朝你挥手。】
-
-"哇！你也来啦！快来快来~"
-
-【他兴奋地拍着旁边的座位，笑容灿烂得像小太阳。】`
+  // 等待角色数据加载完成
+  async waitForCharacter() {
+    // 如果角色数据已加载，直接返回
+    if (this.data.character && this.data.character._id) {
+      return
     }
 
-    // 获取当前角色的开场白，如果没有则使用默认的
-    const openingText = openingTexts[this.data.characterId] || openingTexts['char_001']
+    // 等待最多 3 秒
+    return new Promise((resolve) => {
+      let attempts = 0
+      const checkInterval = setInterval(() => {
+        attempts++
+        if (this.data.character && this.data.character._id) {
+          clearInterval(checkInterval)
+          resolve()
+        } else if (attempts > 30) {
+          // 超时
+          clearInterval(checkInterval)
+          resolve()
+        }
+      }, 100)
+    })
+  },
 
-    // 解析开场白
-    const parsedContent = parseAIMessage(openingText)
+  // 🎭 选择场景
+  selectScene(e) {
+    const sceneId = e.currentTarget.dataset.scene
+    const scene = this.data.availableScenes.find(s => s.scene === sceneId)
+
+    if (!scene) {
+      console.error('场景不存在:', sceneId)
+      return
+    }
+
+    console.log('选择场景:', scene.title)
+
+    // 解析场景内容
+    const parsedContent = parseAIMessage(scene.content)
 
     // 创建开场白消息
     const openingMessage = {
       role: 'assistant',
-      content: openingText,
+      content: scene.content,
       parsedContent: parsedContent,
-      isOpening: true // 标记为开场白
+      isOpening: true,
+      scene: sceneId
     }
 
     this.setData({
       messages: [openingMessage],
+      showSceneSelector: false,
       affection: 0
     })
 
-    // 生成初始的快捷互动选项
+    // 生成快捷互动选项（基于场景关键词）
     this.generateQuickActions(0)
 
+    this.scrollToBottom()
+  },
+
+  // 显示默认开场白（降级方案）
+  showDefaultOpening() {
+    const defaultText = '【你推开门，看到他正坐在办公桌前。】\n\n"你来了。"\n\n【他抬起头看向你。】'
+    const parsedContent = parseAIMessage(defaultText)
+
+    const openingMessage = {
+      role: 'assistant',
+      content: defaultText,
+      parsedContent: parsedContent,
+      isOpening: true
+    }
+
+    this.setData({
+      messages: [openingMessage],
+      affection: 0,
+      showSceneSelector: false
+    })
+
+    this.generateQuickActions(0)
     this.scrollToBottom()
   },
 

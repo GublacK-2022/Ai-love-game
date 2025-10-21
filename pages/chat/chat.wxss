@@ -8,6 +8,115 @@
   position: relative;
 }
 
+/* 🎭 场景选择器样式 */
+.scene-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.scene-selector-container {
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.scene-selector-header {
+  padding: 24px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+}
+
+.scene-selector-title {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.scene-selector-subtitle {
+  display: block;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.scene-list {
+  flex: 1;
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+.scene-card {
+  background: white;
+  border: 2px solid #e0e6f0;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.scene-card:active,
+.scene-card-hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+  border-color: #667eea;
+}
+
+.scene-card-header {
+  margin-bottom: 12px;
+}
+
+.scene-title {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin-bottom: 8px;
+}
+
+.scene-keywords {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.keyword-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf4 100%);
+  color: #667eea;
+  font-size: 12px;
+  border-radius: 12px;
+  border: 1px solid #e0e6f0;
+}
+
+.scene-preview {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #666;
+  margin-top: 8px;
+}
+
 /* 加载状态遮罩 */
 .loading-container {
   position: fixed;
