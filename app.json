@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/character-select/character-select",
-    "pages/chat/chat"
+    "pages/chat/chat",
+    "pages/privacy/privacy"
   ],
   "window": {
     "backgroundTextStyle": "dark",

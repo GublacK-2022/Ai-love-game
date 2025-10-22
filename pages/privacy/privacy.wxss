@@ -1,0 +1,94 @@
+/* pages/privacy/privacy.wxss */
+.privacy-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.privacy-header {
+  padding: 40rpx 30rpx 20rpx;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.privacy-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.privacy-update {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.privacy-content {
+  flex: 1;
+  padding: 30rpx;
+}
+
+.section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.section-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.section-text {
+  display: block;
+  font-size: 26rpx;
+  line-height: 1.8;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.section-footer {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16rpx;
+  padding: 40rpx;
+  text-align: center;
+  margin-top: 20rpx;
+}
+
+.footer-text {
+  display: block;
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 500;
+}
+
+.privacy-footer {
+  padding: 30rpx;
+  background: #fff;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.btn-agree {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-radius: 44rpx;
+  border: none;
+}
+
+.btn-agree::after {
+  border: none;
+}

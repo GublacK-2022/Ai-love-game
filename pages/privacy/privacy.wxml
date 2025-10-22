@@ -1,0 +1,99 @@
+<!--pages/privacy/privacy.wxml-->
+<view class="privacy-container">
+  <view class="privacy-header">
+    <text class="privacy-title">隐私政策</text>
+    <text class="privacy-update">最后更新：2025年10月23日</text>
+  </view>
+
+  <scroll-view class="privacy-content" scroll-y>
+    <view class="section">
+      <text class="section-title">欢迎使用 AI恋爱养成</text>
+      <text class="section-text">
+        我们非常重视您的隐私。本隐私政策说明了我们如何收集、使用和保护您的个人信息。
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">一、我们收集的信息</text>
+      <text class="section-text">
+        为了向您提供服务，我们可能会收集以下信息：
+      </text>
+      <text class="section-text">• 微信授权信息：微信昵称、头像（用于个性化体验）</text>
+      <text class="section-text">• 聊天记录：您与AI角色的对话内容（用于提供连续的对话体验）</text>
+      <text class="section-text">• 使用数据：好感度、互动次数等游戏数据</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">二、信息的使用</text>
+      <text class="section-text">
+        我们收集的信息仅用于以下目的：
+      </text>
+      <text class="section-text">• 提供个性化的AI对话服务</text>
+      <text class="section-text">• 保存您的游戏进度和聊天历史</text>
+      <text class="section-text">• 改进产品功能和用户体验</text>
+      <text class="section-text">• 确保服务安全，防止滥用</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">三、信息的存储</text>
+      <text class="section-text">
+        您的数据存储在微信云开发平台，受微信云开发隐私协议保护。
+      </text>
+      <text class="section-text">• 聊天记录：仅您本人可见，我们不会与第三方共享</text>
+      <text class="section-text">• 数据安全：采用加密传输和存储技术</text>
+      <text class="section-text">• 数据保留：您可以随时删除聊天记录</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">四、第三方服务</text>
+      <text class="section-text">
+        本小程序使用以下第三方服务：
+      </text>
+      <text class="section-text">• 微信云开发：用于数据存储和云函数</text>
+      <text class="section-text">• DeepSeek AI：用于生成AI对话内容</text>
+      <text class="section-text">
+        这些服务提供商也会遵守相应的隐私保护政策。
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">五、您的权利</text>
+      <text class="section-text">
+        您拥有以下权利：
+      </text>
+      <text class="section-text">• 访问权：查看您的聊天历史和游戏数据</text>
+      <text class="section-text">• 删除权：随时删除您的聊天记录</text>
+      <text class="section-text">• 拒绝权：您可以选择不使用本服务</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">六、未成年人保护</text>
+      <text class="section-text">
+        我们非常重视未成年人的隐私保护。如果您是未成年人，请在监护人的陪同下使用本服务。
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">七、政策更新</text>
+      <text class="section-text">
+        我们可能会不时更新本隐私政策。更新后，我们会在小程序内通知您。
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">八、联系我们</text>
+      <text class="section-text">
+        如果您对本隐私政策有任何疑问，可以通过 GitHub Issues 联系我们：
+      </text>
+      <text class="section-text">https://github.com/GublacK-2022/Ai-love-game/issues</text>
+    </view>
+
+    <view class="section-footer">
+      <text class="footer-text">感谢您信任并使用 AI恋爱养成！</text>
+    </view>
+  </scroll-view>
+
+  <view class="privacy-footer">
+    <button class="btn-agree" bindtap="onAgree">我已阅读并同意</button>
+  </view>
+</view>

@@ -16,8 +16,23 @@ App({
       
       console.log('云开发初始化成功');
     }
+
+    // 检查是否已同意隐私政策
+    this.checkPrivacyAgreement();
   },
-  
+
+  // 检查隐私协议
+  checkPrivacyAgreement() {
+    const privacyAgreed = wx.getStorageSync('privacy_agreed');
+
+    if (!privacyAgreed) {
+      // 未同意隐私政策，跳转到隐私政策页面
+      wx.reLaunch({
+        url: '/pages/privacy/privacy?from=index'
+      });
+    }
+  },
+
   globalData: {
     userInfo: null
   }
