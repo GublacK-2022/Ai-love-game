@@ -458,6 +458,47 @@ Page({
 
         this.scrollToBottom()
 
+        // 🔥 保存聊天记录到数据库
+        try {
+          // 先获取 session
+          const sessionRes = await db.collection('chat_sessions')
+            .where({
+              characterId: this.data.characterId
+            })
+            .get()
+
+          if (sessionRes.data.length > 0) {
+            const session = sessionRes.data[0]
+
+            // 保存到 chat_history
+            await db.collection('chat_history').add({
+              data: {
+                sessionId: session._id,
+                characterId: this.data.characterId,
+                userMessage: userMessage.content,
+                aiReply: rawReply,
+                createdAt: new Date()
+              }
+            })
+
+            // 更新 session 的最后聊天时间和计数
+            await db.collection('chat_sessions').doc(session._id).update({
+              data: {
+                affection: res.result.data.affection,
+                chatCount: (session.chatCount || 0) + 1,
+                lastChatAt: new Date()
+              }
+            })
+
+            console.log('�� 聊天记录已保存')
+          } else {
+            console.warn('⚠️ 未找到 session，无法保存聊天记录')
+          }
+        } catch (saveErr) {
+          console.error('保存聊天记录失败:', saveErr)
+          // 保存失败不影响用户继续聊天，只记录错误
+        }
+
         // 显示好感度变化提示
         if (res.result.data.affectionChange > 0) {
           wx.showToast({

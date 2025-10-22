@@ -7,8 +7,14 @@ cloud.init({
 
 const db = cloud.database()
 
-// ⚠️ 替换成你的DeepSeek API Key
-const DEEPSEEK_API_KEY = 'sk-c0e0579bf1d946a5a95384e0b7ea5124'
+// 🔒 从环境变量获取 API Key（更安全）
+// 在云函数控制台设置环境变量：DEEPSEEK_API_KEY
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || ''
+
+// 启动时检查 API Key
+if (!DEEPSEEK_API_KEY) {
+  console.error('⚠️ 未配置 DEEPSEEK_API_KEY 环境变量！')
+}
 
 // 频率限制：用于存储用户调用记录
 // 格式：{ userId: [timestamp1, timestamp2, ...] }
