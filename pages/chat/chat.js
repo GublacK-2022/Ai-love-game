@@ -79,7 +79,9 @@ Page({
     quickActions: [],
     // 🎭 场景选择器
     showSceneSelector: false,
-    availableScenes: []
+    availableScenes: [],
+    // 💾 缓存 session，避免重复查询
+    cachedSession: null
   },
 
   onLoad(options) {
@@ -130,8 +132,10 @@ Page({
       if (sessionRes.data.length > 0) {
         const session = sessionRes.data[0]
 
+        // 💾 缓存 session，避免后续重复查询
         this.setData({
-          affection: session.affection || 0
+          affection: session.affection || 0,
+          cachedSession: session
         })
 
         const historyRes = await db.collection('chat_history')
@@ -508,20 +512,21 @@ Page({
     } catch (err) {
       console.error('发送消息失败:', err)
 
-      // 7. 完整的错误处理
-      let errorMsg = '网络异常，请检查网络后重试'
+      // 7. 友好的错误提示
+      let errorMsg = '网络不太稳定，请稍后重试'
       let errorTitle = '发送失败'
 
       // 根据不同错误类型显示不同提示
       if (err.errMsg && err.errMsg.includes('timeout')) {
-        errorTitle = 'AI 思考超时'
-        errorMsg = 'AI 正在努力思考中，响应时间较长。\n\n建议：\n1. 稍后重试\n2. 简化问题内容\n3. 检查网络连接'
+        errorTitle = '响应超时'
+        errorMsg = 'TA正在思考中...\n可能网络较慢，请稍后重试'
       } else if (err.errMsg && err.errMsg.includes('TIME_LIMIT_EXCEEDED')) {
-        errorTitle = '云函数超时'
-        errorMsg = 'AI 思考时间过长导致超时。\n\n已为您优化配置，请重新上传云函数后再试。'
+        errorTitle = '响应超时'
+        errorMsg = 'TA思考的时间有点长\n请稍后再试试吧'
       } else if (err.errMsg && err.errMsg.includes('fail')) {
-        errorMsg = '网络连接失败，请检查网络设置'
+        errorMsg = '网络连接失败\n请检查网络后重试'
       } else if (err.message) {
+        // 保留自定义错误消息（如频率限制）
         errorMsg = err.message
       }
 
