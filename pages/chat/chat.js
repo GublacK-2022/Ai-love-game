@@ -142,13 +142,24 @@ Page({
           .limit(50)
           .get()
 
+        console.log('📝 查询历史记录:', {
+          sessionId: session._id,
+          count: historyRes.data.length,
+          data: historyRes.data
+        })
+
         const messages = []
         historyRes.data.forEach(item => {
-          // 添加用户消息
-          messages.push({
-            role: 'user',
-            content: item.userMessage
-          })
+          // 🔥 如果是系统消息（如开场白），只显示 AI 回复，不显示用户消息
+          const isSystemMessage = item.userMessage && item.userMessage.startsWith('[系统]')
+
+          if (!isSystemMessage) {
+            // 添加用户消息
+            messages.push({
+              role: 'user',
+              content: item.userMessage
+            })
+          }
 
           // 添加 AI 消息并解析
           const aiReply = item.aiReply
@@ -157,6 +168,11 @@ Page({
             content: aiReply,
             parsedContent: parseAIMessage(aiReply) // 🎮 解析历史消息
           })
+        })
+
+        console.log('📨 处理后的消息列表:', {
+          count: messages.length,
+          messages: messages
         })
 
         this.setData({
