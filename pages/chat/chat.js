@@ -287,32 +287,22 @@ Page({
     })
 
     try {
-      // 🔥 重要：创建 chat_session，避免下次进入又显示场景选择器
-      const sessionRes = await db.collection('chat_sessions').add({
+      // 🔥 重要：通过云函数创建 session，确保带上 userId
+      const sessionRes = await wx.cloud.callFunction({
+        name: 'chat',
         data: {
+          action: 'createSession',
           characterId: this.data.characterId,
-          affection: 0,
-          chatCount: 0,
-          selectedScene: sceneId, // 记录选择的场景
-          createdAt: new Date(),
-          lastChatAt: new Date()
+          sceneId: sceneId,
+          sceneContent: scene.content
         }
       })
 
-      console.log('创建会话成功:', sessionRes._id)
+      if (!sessionRes.result || !sessionRes.result.success) {
+        throw new Error(sessionRes.result?.error || '创建会话失败')
+      }
 
-      // 🔥 保存开场白到 chat_history，这样下次进入能看到历史记录
-      await db.collection('chat_history').add({
-        data: {
-          sessionId: sessionRes._id,
-          characterId: this.data.characterId,
-          userMessage: '[系统] 选择了场景: ' + scene.title,
-          aiReply: scene.content,
-          createdAt: new Date()
-        }
-      })
-
-      console.log('保存开场白成功')
+      console.log('创建会话成功:', sessionRes.result.data.sessionId)
 
       // 解析场景内容
       const parsedContent = parseAIMessage(scene.content)

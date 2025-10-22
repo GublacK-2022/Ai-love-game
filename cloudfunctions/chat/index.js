@@ -217,15 +217,53 @@ async function callDeepSeekAPI(messages) {
 // 主函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  const { characterId, userMessage, chatHistory = [] } = event
+  const { action, characterId, userMessage, chatHistory = [], sceneId, sceneContent } = event
 
   console.log('收到请求:', {
+    action: action || 'chat',
     characterId,
     userMessage,
     userId: wxContext.OPENID
   })
 
   try {
+    // 🆕 处理创建 session 的请求（用于场景选择）
+    if (action === 'createSession') {
+      const session = await db.collection('chat_sessions').add({
+        data: {
+          userId: wxContext.OPENID,
+          characterId: characterId,
+          affection: 0,
+          chatCount: 0,
+          selectedScene: sceneId,
+          createdAt: new Date(),
+          lastChatAt: new Date()
+        }
+      })
+
+      // 保存开场白到 chat_history
+      if (sceneContent) {
+        await db.collection('chat_history').add({
+          data: {
+            sessionId: session._id,
+            userId: wxContext.OPENID,
+            characterId: characterId,
+            userMessage: '[系统] 选择了场景: ' + sceneId,
+            aiReply: sceneContent,
+            createdAt: new Date()
+          }
+        })
+      }
+
+      return {
+        success: true,
+        data: {
+          sessionId: session._id,
+          affection: 0
+        }
+      }
+    }
+
     // 【频率限制检查】必须放在最前面
     checkCallLimit(wxContext.OPENID)
     // 1. 获取或创建会话
