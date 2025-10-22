@@ -285,6 +285,19 @@ Page({
 
       console.log('创建会话成功:', sessionRes._id)
 
+      // 🔥 保存开场白到 chat_history，这样下次进入能看到历史记录
+      await db.collection('chat_history').add({
+        data: {
+          sessionId: sessionRes._id,
+          characterId: this.data.characterId,
+          userMessage: '[系统] 选择了场景: ' + scene.title,
+          aiReply: scene.content,
+          createdAt: new Date()
+        }
+      })
+
+      console.log('保存开场白成功')
+
       // 解析场景内容
       const parsedContent = parseAIMessage(scene.content)
 
