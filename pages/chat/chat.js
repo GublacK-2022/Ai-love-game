@@ -253,7 +253,7 @@ Page({
   },
 
   // 🎭 选择场景
-  selectScene(e) {
+  async selectScene(e) {
     const sceneId = e.currentTarget.dataset.scene
     const scene = this.data.availableScenes.find(s => s.scene === sceneId)
 
@@ -264,28 +264,62 @@ Page({
 
     console.log('选择场景:', scene.title)
 
-    // 解析场景内容
-    const parsedContent = parseAIMessage(scene.content)
-
-    // 创建开场白消息
-    const openingMessage = {
-      role: 'assistant',
-      content: scene.content,
-      parsedContent: parsedContent,
-      isOpening: true,
-      scene: sceneId
-    }
-
-    this.setData({
-      messages: [openingMessage],
-      showSceneSelector: false,
-      affection: 0
+    // 显示加载提示
+    wx.showLoading({
+      title: '进入剧情...',
+      mask: true
     })
 
-    // 生成快捷互动选项（基于场景关键词）
-    this.generateQuickActions(0)
+    try {
+      // 🔥 重要：创建 chat_session，避免下次进入又显示场景选择器
+      const sessionRes = await db.collection('chat_sessions').add({
+        data: {
+          characterId: this.data.characterId,
+          affection: 0,
+          chatCount: 0,
+          selectedScene: sceneId, // 记录选择的场景
+          createdAt: new Date(),
+          lastChatAt: new Date()
+        }
+      })
 
-    this.scrollToBottom()
+      console.log('创建会话成功:', sessionRes._id)
+
+      // 解析场景内容
+      const parsedContent = parseAIMessage(scene.content)
+
+      // 创建开场白消息
+      const openingMessage = {
+        role: 'assistant',
+        content: scene.content,
+        parsedContent: parsedContent,
+        isOpening: true,
+        scene: sceneId
+      }
+
+      this.setData({
+        messages: [openingMessage],
+        showSceneSelector: false,
+        affection: 0
+      })
+
+      // 生成快捷互动选项（基于场景关键词）
+      this.generateQuickActions(0)
+
+      this.scrollToBottom()
+
+      wx.hideLoading()
+
+    } catch (err) {
+      console.error('创建会话失败:', err)
+      wx.hideLoading()
+
+      wx.showModal({
+        title: '创建对话失败',
+        content: err.message || '请重试',
+        showCancel: false
+      })
+    }
   },
 
   // 显示默认开场白（降级方案）
