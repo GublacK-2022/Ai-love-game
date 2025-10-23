@@ -67,8 +67,7 @@
   <!-- CTA 按钮 -->
   <view class="cta-section">
     <button class="btn-start" bindtap="goToCharacterSelect">
-      <text class="btn-text">开始你的故事</text>
-      <text class="btn-icon">→</text>
+      开始你的故事 →
     </button>
     <text class="privacy-link" bindtap="goToPrivacy">隐私政策</text>
   </view>

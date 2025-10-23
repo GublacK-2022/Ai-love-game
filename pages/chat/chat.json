@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "对话",
+  "navigationBarBackgroundColor": "#0f0c29",
+  "navigationBarTextStyle": "white",
   "usingComponents": {},
   "disableScroll": true
 }

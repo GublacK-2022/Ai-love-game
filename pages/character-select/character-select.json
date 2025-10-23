@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "选择角色",
+  "navigationBarBackgroundColor": "#0f0c29",
+  "navigationBarTextStyle": "white",
   "usingComponents": {}
 }

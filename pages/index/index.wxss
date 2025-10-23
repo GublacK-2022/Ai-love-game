@@ -201,16 +201,17 @@
 .btn-start {
   width: 100%;
   height: 100rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16rpx;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50rpx;
   border: none;
   box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.4);
   position: relative;
   overflow: hidden;
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 2rpx;
+  line-height: 100rpx;
 }
 
 .btn-start::before {
@@ -230,19 +231,6 @@
 
 .btn-start::after {
   border: none;
-}
-
-.btn-text {
-  font-size: 34rpx;
-  font-weight: 500;
-  color: #fff;
-  letter-spacing: 2rpx;
-}
-
-.btn-icon {
-  font-size: 36rpx;
-  color: #fff;
-  font-weight: 300;
 }
 
 .privacy-link {

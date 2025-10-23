@@ -1,158 +1,153 @@
-/* pages/character-select/character-select.wxss - 垂直居中版本 */
+/* pages/character-select/character-select.wxss */
 
 .container {
   padding: 0;
-  background-color: #f8f8f8;
+  background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
   min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景装饰 */
+.container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(103, 126, 234, 0.1) 0%, transparent 70%);
+  animation: rotate 30s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* 页面标题 */
 .page-header {
-  padding: 32px 20px 24px;
+  padding: 40rpx 40rpx 30rpx;
   text-align: center;
-  background: white;
-  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+  z-index: 1;
 }
 
 .header-title {
   display: block;
-  font-size: 26px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 8px;
-  letter-spacing: 0.5px;
+  font-size: 48rpx;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 16rpx;
+  letter-spacing: 2rpx;
 }
 
 .header-subtitle {
   display: block;
-  font-size: 14px;
-  color: #8e8e93;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 300;
 }
 
 /* 角色列表 */
 .character-list {
-  height: calc(100vh - 150px);
-  padding: 16px 16px 20px;
+  height: calc(100vh - 200rpx);
+  padding: 20rpx 40rpx 40rpx;
+  position: relative;
+  z-index: 1;
 }
 
-/* 角色卡片 - 关键：垂直居中 */
+/* 角色卡片 */
 .character-card {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
   display: flex;
-  align-items: center; /* ⭐ 关键：垂直居中 */
-  transition: all 0.2s ease;
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.character-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.character-card:active::before {
+  left: 100%;
 }
 
 .character-card:active {
-  transform: scale(0.98);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(2rpx);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* 角色头像 */
+/* 头像 */
 .character-avatar {
-  width: 100px;
-  height: 130px;
-  margin-right: 16px;
-  position: relative;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  margin-right: 28rpx;
   flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(103, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+  border: 2rpx solid rgba(255, 255, 255, 0.2);
 }
 
-.avatar-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
-
-/* 免费/付费标签 */
-.tag {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 500;
-  backdrop-filter: blur(10px);
-}
-
-.tag-free {
-  background: rgba(52, 199, 89, 0.9);
-  color: white;
-}
-
-.tag-paid {
-  background: rgba(255, 149, 0, 0.9);
-  color: white;
-}
-
-/* 角色信息 - 移除固定高度 */
+/* 角色信息 */
 .character-info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px; /* ⭐ 用gap控制间距 */
-}
-
-.name-row {
-  display: flex;
-  align-items: baseline;
+  gap: 12rpx;
 }
 
 .character-name {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin-right: 8px;
-  letter-spacing: 0.3px;
+  font-size: 36rpx;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 8rpx;
 }
 
-.character-age {
-  font-size: 13px;
-  color: #8e8e93;
-  font-weight: 400;
-}
-
-.character-occupation {
-  font-size: 13px;
-  color: #636366;
-  font-weight: 400;
-  margin: 0; /* ⭐ 移除margin，用gap控制 */
-}
-
-/* 标签列表 */
-.tags {
-  display: inline-flex;
+.character-meta {
+  display: flex;
+  gap: 20rpx;
   flex-wrap: wrap;
-  gap: 6px;
 }
 
-.tag-item {
-  background: #f2f2f7;
-  color: #3a3a3c;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 400;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+.meta-item {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-/* 简介 */
-.character-intro {
-  font-size: 13px;
-  color: #636366;
+.character-desc {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.6;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  font-weight: 300;
-  margin: 0; /* ⭐ 移除margin */
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* 箭头图标 */
+.arrow-icon {
+  font-size: 40rpx;
+  color: rgba(255, 255, 255, 0.4);
+  margin-left: 20rpx;
+  flex-shrink: 0;
 }
