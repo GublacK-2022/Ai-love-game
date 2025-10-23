@@ -337,9 +337,17 @@ Page({
       console.error('创建会话失败:', err)
       wx.hideLoading()
 
+      // 安全地获取错误信息
+      let errorMsg = '请重试'
+      if (err && err.message) {
+        errorMsg = err.message
+      } else if (err && err.errMsg) {
+        errorMsg = err.errMsg
+      }
+
       wx.showModal({
         title: '创建对话失败',
-        content: err.message || '请重试',
+        content: errorMsg,
         showCancel: false
       })
     }
@@ -516,18 +524,22 @@ Page({
       let errorMsg = '网络不太稳定，请稍后重试'
       let errorTitle = '发送失败'
 
+      // 安全地检查错误类型
+      const errMsgStr = (err && err.errMsg) ? String(err.errMsg) : ''
+      const errMessageStr = (err && err.message) ? String(err.message) : ''
+
       // 根据不同错误类型显示不同提示
-      if (err.errMsg && err.errMsg.includes('timeout')) {
+      if (errMsgStr.includes('timeout')) {
         errorTitle = '响应超时'
         errorMsg = 'TA正在思考中...\n可能网络较慢，请稍后重试'
-      } else if (err.errMsg && err.errMsg.includes('TIME_LIMIT_EXCEEDED')) {
+      } else if (errMsgStr.includes('TIME_LIMIT_EXCEEDED')) {
         errorTitle = '响应超时'
         errorMsg = 'TA思考的时间有点长\n请稍后再试试吧'
-      } else if (err.errMsg && err.errMsg.includes('fail')) {
+      } else if (errMsgStr.includes('fail')) {
         errorMsg = '网络连接失败\n请检查网络后重试'
-      } else if (err.message) {
+      } else if (errMessageStr) {
         // 保留自定义错误消息（如频率限制）
-        errorMsg = err.message
+        errorMsg = errMessageStr
       }
 
       // 显示详细错误对话框
