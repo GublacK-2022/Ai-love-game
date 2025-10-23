@@ -1,39 +1,75 @@
 <!--pages/index/index.wxml-->
-<view class="container">
-  <!-- 欢迎区域 -->
-  <view class="welcome-section">
-    <image class="logo" src="/images/logo.png" mode="aspectFit" />
-    <text class="app-name">AI恋爱养成</text>
-    <text class="app-slogan">开启你的专属恋爱故事</text>
+<view class="index-container">
+  <!-- 主视觉区域 -->
+  <view class="hero-section">
+    <!-- Logo/品牌名 -->
+    <view class="brand">
+      <text class="brand-name">对白</text>
+      <view class="brand-line"></view>
+    </view>
+
+    <!-- 主标语 -->
+    <view class="slogan-wrapper">
+      <text class="slogan-main">在这里，你是主角</text>
+      <text class="slogan-sub">开启一段只属于你的故事</text>
+    </view>
+
+    <!-- 特点标签 -->
+    <view class="tags">
+      <view class="tag">
+        <text class="tag-icon">📖</text>
+        <text class="tag-text">文字冒险</text>
+      </view>
+      <view class="tag">
+        <text class="tag-icon">🎭</text>
+        <text class="tag-text">角色扮演</text>
+      </view>
+      <view class="tag">
+        <text class="tag-icon">✨</text>
+        <text class="tag-text">AI 驱动</text>
+      </view>
+    </view>
   </view>
 
-  <!-- 功能介绍 -->
-  <view class="feature-section">
-    <view class="feature-item">
-      <text class="feature-icon">💬</text>
-      <text class="feature-title">真实对话</text>
-      <text class="feature-desc">AI驱动的自然对话体验</text>
+  <!-- 核心价值展示 -->
+  <view class="value-section">
+    <view class="value-item">
+      <view class="value-icon-wrapper">
+        <text class="value-icon">✍️</text>
+      </view>
+      <view class="value-content">
+        <text class="value-title">你的选择塑造故事</text>
+        <text class="value-desc">每一句对白都由你决定</text>
+      </view>
     </view>
-    
-    <view class="feature-item">
-      <text class="feature-icon">❤️</text>
-      <text class="feature-title">情感养成</text>
-      <text class="feature-desc">好感度系统，多种结局</text>
+
+    <view class="value-item">
+      <view class="value-icon-wrapper">
+        <text class="value-icon">💫</text>
+      </view>
+      <view class="value-content">
+        <text class="value-title">沉浸式叙事体验</text>
+        <text class="value-desc">如同身临其境的互动小说</text>
+      </view>
     </view>
-    
-    <view class="feature-item">
-      <text class="feature-icon">🎭</text>
-      <text class="feature-title">多样角色</text>
-      <text class="feature-desc">不同性格，总有一款适合你</text>
+
+    <view class="value-item">
+      <view class="value-icon-wrapper">
+        <text class="value-icon">🎬</text>
+      </view>
+      <view class="value-content">
+        <text class="value-title">专属剧情走向</text>
+        <text class="value-desc">不同的选择，不同的结局</text>
+      </view>
     </view>
   </view>
 
-  <!-- 开始按钮 -->
-  <view class="action-section">
+  <!-- CTA 按钮 -->
+  <view class="cta-section">
     <button class="btn-start" bindtap="goToCharacterSelect">
-      开始体验
+      <text class="btn-text">开始你的故事</text>
+      <text class="btn-icon">→</text>
     </button>
-    
-    <text class="tip-text">已有 {{userCount}} 人开启了恋爱之旅</text>
+    <text class="privacy-link" bindtap="goToPrivacy">隐私政策</text>
   </view>
 </view>
