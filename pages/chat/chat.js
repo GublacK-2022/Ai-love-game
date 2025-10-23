@@ -282,7 +282,17 @@ Page({
       return
     }
 
-    console.log('选择场景:', scene.title)
+    if (!scene.content) {
+      console.error('场景内容为空:', scene)
+      wx.showModal({
+        title: '场景数据错误',
+        content: '场景内容缺失，请检查数据配置',
+        showCancel: false
+      })
+      return
+    }
+
+    console.log('选择场景:', scene.title, '内容长度:', scene.content.length)
 
     // 显示加载提示
     wx.showLoading({
